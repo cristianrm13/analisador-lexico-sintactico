@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Analizador Léxico y Sintáctico</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Analizador Léxico y Sintáctico</h1>
+    <form id="codeForm">
+        <textarea name="code" rows="10" cols="50"></textarea><br>
+        <button type="submit">Analizar</button>
+    </form>
+    <h2>Resultado</h2>
+    <div id="result"></div>
+    <script>
+        document.getElementById('codeForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            fetch('/analyze', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                let resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            });
+        });
+    </script>
+</body>
+</html>
